@@ -7,12 +7,15 @@ import { LocalAuthGuard } from './auth/guard/local-auth.guard';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService,
-              private readonly authService: AuthService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly authService: AuthService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('auth/login')
   async login(@Request() req) {
+    console.log("appctrl");
     return this.authService.login(req.user);
   }
 
