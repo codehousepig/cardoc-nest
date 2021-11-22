@@ -1,9 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -12,7 +17,15 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const user = await this.userRepository.create(createUserDto);
+    const existUser = await this.userRepository.findOne({
+      id: createUserDto.id,
+    });
+    if (existUser) throw new ForbiddenException();
+    const hash = await bcrypt.hash(createUserDto.password, 10);
+    const user = await this.userRepository.create({
+      ...createUserDto,
+      password: hash,
+    });
     const userEn = await this.userRepository.save(user);
     return userEn.userId;
   }
