@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { getConnectionOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { User } from './user/entities/user.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { User } from './user/entities/user.entity';
     }),
     TypeOrmModule.forFeature([User]),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
