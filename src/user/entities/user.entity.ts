@@ -13,6 +13,9 @@ export class User extends BaseEntity {
   @Column({ nullable: false })
   password: string;
 
+  @Column({ nullable: true })
+  trimId: number;
+
   @Column({
     type: 'enum',
     enum: UserRole,

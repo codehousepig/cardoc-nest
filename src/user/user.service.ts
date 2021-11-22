@@ -7,12 +7,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
   constructor(
+    private connection: Connection,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
@@ -46,11 +47,29 @@ export class UserService {
     return user;
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.findOne(id);
-    user.password = updateUserDto.password;
-    const updateUser = await this.userRepository.save(user);
-    return `updates a password for ${updateUser.id}`;
+  // 사용자에게 자동차 정보를 저장한다
+  async update(updateUserDTOs: UpdateUserDto[]) {
+    if (updateUserDTOs.length > 5) return '5명 이하만 입력이 가능합니다.';
+    const queryRunner = this.connection.createQueryRunner();
+
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      for (let i = 0; i < updateUserDTOs.length; i++) {
+        const user = await this.findByName(updateUserDTOs[i].id);
+        console.log(user);
+        user.password = updateUserDTOs[i].password;
+        user.trimId = updateUserDTOs[i].trimId;
+        const updateUser = await this.userRepository.save(user);
+      }
+      await queryRunner.commitTransaction();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+      throw err;
+    } finally {
+      await queryRunner.release();
+    }
+    return `Updates a success ${updateUserDTOs.length}s ID`;
   }
 
   async remove(id: number) {

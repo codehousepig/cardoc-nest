@@ -6,11 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
@@ -31,14 +33,13 @@ export class UserController {
     return await this.userService.findOne(id);
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: number,
-    @Body() updateUserDto: UpdateUserDto,
-  ): Promise<string> {
-    return await this.userService.update(id, updateUserDto);
+  // @UseGuards(JwtAuthGuard)
+  @Patch()
+  async update(@Body() updateUserDTOs: UpdateUserDto[]): Promise<string> {
+    return await this.userService.update(updateUserDTOs);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
   async remove(@Param('id') id: number): Promise<string> {
     return await this.userService.remove(id);
