@@ -28,7 +28,7 @@ export class FrontTireController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: number) {
     return this.frontTireService.findOne(+id);
   }
 

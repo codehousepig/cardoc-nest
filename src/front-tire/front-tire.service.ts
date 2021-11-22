@@ -1,10 +1,10 @@
-import { ForbiddenException, Injectable } from "@nestjs/common";
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateFrontTireDto } from './dto/create-front-tire.dto';
 import { UpdateFrontTireDto } from './dto/update-front-tire.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FrontTire } from './entities/front-tire.entity';
 import { Repository } from 'typeorm';
-import { Driving } from "../driving/entities/driving.entity";
+import { Driving } from '../driving/entities/driving.entity';
 
 @Injectable()
 export class FrontTireService {
@@ -35,8 +35,10 @@ export class FrontTireService {
     return `This action returns all frontTire`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} frontTire`;
+  async findOne(id: number) {
+    const fTire = await this.frontTireRepository.findOne({ id: id });
+    if (!fTire) throw new NotFoundException(`FrontTire ${id} not found.`);
+    return fTire;
   }
 
   update(id: number, updateFrontTireDto: UpdateFrontTireDto) {

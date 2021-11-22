@@ -10,6 +10,7 @@ import { BaseInfoModule } from './baseinfo/baseinfo.module';
 import { SpecModule } from './spec/spec.module';
 import { DrivingModule } from './driving/driving.module';
 import { FrontTireModule } from './front-tire/front-tire.module';
+import { TemplateModule } from './template/template.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { FrontTireModule } from './front-tire/front-tire.module';
     SpecModule,
     DrivingModule,
     FrontTireModule,
+    TemplateModule,
   ],
   controllers: [AppController],
   providers: [AppService],
