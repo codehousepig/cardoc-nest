@@ -3,7 +3,8 @@ import { BaseEntity } from '../../base/base.entity';
 import { UserRole } from '../../enums/user.role.enum';
 
 @Entity()
-export class User extends BaseEntity {
+// export class User extends BaseEntity {
+export class User {
   @PrimaryGeneratedColumn()
   userId: number;
 

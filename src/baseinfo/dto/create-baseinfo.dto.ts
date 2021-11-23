@@ -25,14 +25,14 @@ export class CreateBaseInfoDto {
 
   @ApiProperty({
     description: '자동차 차종 ID (trimId)',
-    default: 5000,
+    default: 5002,
   })
   @IsNumber()
   trimId: number;
 
   @ApiProperty({
     description: 'trimName',
-    default: 'GH270 고급형',
+    default: 'GH270 최고급형',
   })
   @IsString()
   trimName: string;
