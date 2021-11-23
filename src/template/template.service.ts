@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { FrontTireService } from '../front-tire/front-tire.service';
 import { BaseInfoService } from '../baseinfo/baseinfo.service';
 import { RearTireService } from '../rear-tire/rear-tire.service';
-import { User } from "../user/entities/user.entity";
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class TemplateService {
@@ -14,8 +14,8 @@ export class TemplateService {
 
   async myTire(user: User) {
     const mytire = {
-      frontTire: await this.frontTireToTrim(user.trimId),
-      rearTire: await this.rearTireToTrim(user.trimId)
+      frontTire: (await this.frontTireToTrim(user.trimId)) || '',
+      rearTire: (await this.rearTireToTrim(user.trimId)) || '',
     };
     return mytire;
   }
@@ -49,13 +49,13 @@ export class TemplateService {
     const resultDriving = {
       name: '',
       type: '',
-      frontTire: await this.frontTireToTrim(id),
+      frontTire: (await this.frontTireToTrim(id)) || '',
       steering: '',
       frontBreak: '',
       rearBreak: '',
       frontSuspension: '',
       rearSuspension: '',
-      rearTire: await this.rearTireToTrim(id),
+      rearTire: (await this.rearTireToTrim(id)) || '',
       gearRatio: '',
       powerSteering: '',
     };
@@ -69,7 +69,7 @@ export class TemplateService {
       fuel: '',
       dimension: '',
       engine: '',
-      driving: await this.drivingToTrim(id),
+      driving: (await this.drivingToTrim(id)) || '',
     };
     return resultSpec;
   }
@@ -77,15 +77,15 @@ export class TemplateService {
   async trimToView(id: number) {
     const rawBaseInfo = await this.baseInfoService.findOne(id);
     const result = {
-      brandId: rawBaseInfo.brandId,
-      brandName: rawBaseInfo.brandName,
+      brandId: rawBaseInfo.brandId || '',
+      brandName: rawBaseInfo.brandName || '',
       brandNameEng: '',
       country: '',
       isImported: '',
       brandImageUrl: '',
       brandUrl: '',
       modelId: '',
-      modelName: rawBaseInfo.modelName,
+      modelName: rawBaseInfo.modelName || '',
       submodelGroupId: '',
       submodelGroupYearTypeFrom: '',
       submodelGroupYearTypeTo: '',
@@ -100,8 +100,8 @@ export class TemplateService {
       gradeName: '',
       fuelType: '',
       displacement: '',
-      trimId: rawBaseInfo.trimId,
-      trimName: rawBaseInfo.trimName,
+      trimId: rawBaseInfo.trimId || '',
+      trimName: rawBaseInfo.trimName || '',
       salesCode: '',
       bodySize: '',
       bodyStyle: '',
@@ -112,7 +112,7 @@ export class TemplateService {
       releaseDate: '',
       discontinuedDate: '',
       carTypeCode: '',
-      spec: await this.specToTrim(id),
+      spec: (await this.specToTrim(id)) || '',
     };
     return result;
   }

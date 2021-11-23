@@ -1,10 +1,5 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateFrontTireDto } from './dto/create-front-tire.dto';
-import { UpdateFrontTireDto } from './dto/update-front-tire.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FrontTire } from './entities/front-tire.entity';
 import { Repository } from 'typeorm';
@@ -22,7 +17,7 @@ export class FrontTireService {
     const existTire = await this.frontTireRepository.findOne({
       id: createFrontTireDto.id,
     });
-    if (existTire) throw new ForbiddenException();
+    if (existTire) throw new BadRequestException('Parameter가 잘못되었습니다.');
     const front = await this.frontTireRepository.save(createFrontTireDto);
 
     const existDri = await this.drivingRepository.findOne({
@@ -35,21 +30,9 @@ export class FrontTireService {
     return front.id;
   }
 
-  findAll() {
-    return `This action returns all frontTire`;
-  }
-
   async findOne(id: number) {
     const fTire = await this.frontTireRepository.findOne({ id: id });
-    if (!fTire) throw new NotFoundException(`FrontTire ${id} not found.`);
+    if (!fTire) throw new BadRequestException(`Parameter가 잘못되었습니다. 타이어 전의 정보가 없습니다.`);
     return fTire;
-  }
-
-  update(id: number, updateFrontTireDto: UpdateFrontTireDto) {
-    return `This action updates a #${id} frontTire`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} frontTire`;
   }
 }

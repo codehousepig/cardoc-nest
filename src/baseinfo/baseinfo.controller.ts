@@ -1,45 +1,27 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { BaseInfoService } from './baseinfo.service';
 import { CreateBaseInfoDto } from './dto/create-baseinfo.dto';
-import { UpdateBaseInfoDto } from './dto/update-baseinfo.dto';
-
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 @Controller('trim') //
 export class BaseInfoController {
   constructor(private readonly baseInfoService: BaseInfoService) {}
 
+  @ApiTags('TRIM')
+  @ApiOperation({ summary: 'trim 정보 등록' })
+  @ApiBearerAuth()
+  @ApiResponse({ status: 201, description: 'trim 등록 성공' })
+  @ApiResponse({ status: 400, description: 'Parameter가 잘못되었습니다.' })
+  @ApiResponse({ status: 401, description: '인증을 위한 Header가 잘못됨' })
+  @ApiResponse({ status: 500, description: '기타 서버 에러' })
+  @UseGuards(JwtAuthGuard)
   @Post()
   async create(@Body() createBaseInfoDto: CreateBaseInfoDto): Promise<number> {
     return await this.baseInfoService.create(createBaseInfoDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.baseInfoService.findAll();
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return await this.baseInfoService.findOne(id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: number,
-    @Body() updateBaseInfoDto: UpdateBaseInfoDto,
-  ) {
-    return this.baseInfoService.update(id, updateBaseInfoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.baseInfoService.remove(id);
   }
 }

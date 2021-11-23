@@ -1,8 +1,4 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -21,7 +17,10 @@ export class UserService {
     const existUser = await this.userRepository.findOne({
       id: createUserDto.id,
     });
-    if (existUser) throw new ForbiddenException();
+    if (existUser)
+      throw new BadRequestException(
+        'Parameter가 잘못되었습니다. 이미 존재하는 ID입니다.',
+      );
     const hash = await bcrypt.hash(createUserDto.password, 10);
     const user = await this.userRepository.create({
       ...createUserDto,
@@ -31,25 +30,30 @@ export class UserService {
     return userEn.userId;
   }
 
-  findAll() {
-    return this.userRepository.find();
-  }
-
   async findOne(id: number): Promise<User> {
     const user = await this.userRepository.findOne({ userId: id });
-    if (!user) throw new NotFoundException(`User with userID ${id} not found.`);
+    if (!user)
+      throw new BadRequestException(
+        `Parameter가 잘못되었습니다. user의 정보가 없습니다.`,
+      );
     return user;
   }
 
   async findByName(id: string) {
     const user = await this.userRepository.findOne({ id: id });
-    if (!user) throw new NotFoundException(`User with ID ${id} not found.`);
+    if (!user)
+      throw new BadRequestException(
+        `Parameter가 잘못되었습니다. user의 정보가 없습니다.`,
+      );
     return user;
   }
 
   // 사용자에게 자동차 정보를 저장한다
   async update(updateUserDTOs: UpdateUserDto[]) {
-    if (updateUserDTOs.length > 5) return '5명 이하만 입력이 가능합니다.';
+    if (updateUserDTOs.length > 5)
+      throw new BadRequestException(
+        `Parameter가 잘못되었습니다: 5명 이하만 가능합니다..`,
+      );
     const queryRunner = this.connection.createQueryRunner();
 
     await queryRunner.connect();
@@ -57,10 +61,12 @@ export class UserService {
     try {
       for (let i = 0; i < updateUserDTOs.length; i++) {
         const user = await this.findByName(updateUserDTOs[i].id);
-        console.log(user);
-        user.password = updateUserDTOs[i].password;
-        user.trimId = updateUserDTOs[i].trimId;
-        const updateUser = await this.userRepository.save(user);
+        if (updateUserDTOs[i].password) {
+          const hash = await bcrypt.hash(updateUserDTOs[i].password, 10);
+          user.password = hash;
+        }
+        if (updateUserDTOs[i].trimId) user.trimId = updateUserDTOs[i].trimId;
+        await this.userRepository.save(user);
       }
       await queryRunner.commitTransaction();
     } catch (err) {

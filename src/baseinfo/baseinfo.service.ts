@@ -1,10 +1,5 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateBaseInfoDto } from './dto/create-baseinfo.dto';
-import { UpdateBaseInfoDto } from './dto/update-baseinfo.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BaseInfo } from './entities/baseinfo.entity';
 import { Repository } from 'typeorm';
@@ -19,29 +14,20 @@ export class BaseInfoService {
     const existInfo = await this.baseInfoRepository.findOne({
       trimId: createBaseInfoDto.trimId,
     });
-    if (existInfo) throw new ForbiddenException();
+    if (existInfo)
+      throw new BadRequestException(
+        'Parameter가 잘못되었습니다. 이미 존재하는 정보입니다.',
+      );
     const baseEn = await this.baseInfoRepository.save(createBaseInfoDto);
     return baseEn.trimId;
   }
 
-  async findAll() {
-    return await this.baseInfoRepository.find();
-  }
-
   async findOne(id: number): Promise<BaseInfo> {
-    const result = await this.baseInfoRepository.findOne(
-      { trimId: id },
-      // { relations: ['spec', 'spec.driving'] },
-    );
-    if (!result) throw new NotFoundException(`TrimInfo ${id} not found.`);
+    const result = await this.baseInfoRepository.findOne({ trimId: id });
+    if (!result)
+      throw new BadRequestException(
+        'Parameter가 잘못되었습니다. trim의 정보가 없습니다.',
+      );
     return result;
-  }
-
-  update(id: number, updateBaseInfoDto: UpdateBaseInfoDto) {
-    return `This action updates a #${id} baseinfo`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} baseinfo`;
   }
 }

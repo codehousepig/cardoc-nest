@@ -1,6 +1,5 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateRearTireDto } from './dto/create-rear-tire.dto';
-import { UpdateRearTireDto } from './dto/update-rear-tire.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Driving } from '../driving/entities/driving.entity';
 import { Repository } from 'typeorm';
@@ -18,34 +17,22 @@ export class RearTireService {
     const existTire = await this.rearTireRepository.findOne({
       id: createRearTireDto.id,
     });
-    if (existTire) throw new ForbiddenException();
-    const front = await this.rearTireRepository.save(createRearTireDto);
+    if (existTire) throw new BadRequestException('Parameter가 잘못되었습니다.');
+    const rear = await this.rearTireRepository.save(createRearTireDto);
 
     const existDri = await this.drivingRepository.findOne({
       id: createRearTireDto.id,
     });
     if (existDri) {
-      existDri.frontTire = front;
+      existDri.rearTire = rear;
       await this.drivingRepository.save(existDri);
     }
-    return front.id;
-  }
-
-  findAll() {
-    return `This action returns all rearTire`;
+    return rear.id;
   }
 
   async findOne(id: number) {
-    const fTire = await this.rearTireRepository.findOne({ id: id });
-    if (!fTire) throw new NotFoundException(`FrontTire ${id} not found.`);
-    return fTire;
-  }
-
-  update(id: number, updateRearTireDto: UpdateRearTireDto) {
-    return `This action updates a #${id} rearTire`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} rearTire`;
+    const rTire = await this.rearTireRepository.findOne({ id: id });
+    if (!rTire) throw new BadRequestException(`Parameter가 잘못되었습니다. 타이어 후의 정보가 없습니다.`);
+    return rTire;
   }
 }

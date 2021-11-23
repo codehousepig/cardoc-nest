@@ -1,6 +1,5 @@
-import { ForbiddenException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateDrivingDto } from './dto/create-driving.dto';
-import { UpdateDrivingDto } from './dto/update-driving.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Driving } from './entities/driving.entity';
 import { Repository } from 'typeorm';
@@ -18,7 +17,10 @@ export class DrivingService {
     const existD = await this.drivingRepository.findOne({
       id: createDrivingDto.id,
     });
-    if (existD) throw new ForbiddenException();
+    if (existD)
+      throw new BadRequestException(
+        'Parameter가 잘못되었습니다. 이미 존재하는 정보입니다.',
+      );
     const driving = await this.drivingRepository.save(createDrivingDto);
 
     const existSpec = await this.specRepository.findOne({
@@ -29,21 +31,5 @@ export class DrivingService {
       await this.specRepository.save(existSpec);
     }
     return driving.id;
-  }
-
-  findAll() {
-    return `This action returns all driving`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} driving`;
-  }
-
-  update(id: number, updateDrivingDto: UpdateDrivingDto) {
-    return `This action updates a #${id} driving`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} driving`;
   }
 }

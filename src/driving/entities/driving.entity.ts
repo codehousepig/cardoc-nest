@@ -1,5 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { FrontTire } from '../../front-tire/entities/front-tire.entity';
+import { RearTire } from '../../rear-tire/entities/rear-tire.entity';
 
 @Entity()
 export class Driving {
@@ -12,5 +13,8 @@ export class Driving {
   @OneToOne(() => FrontTire, { eager: true })
   @JoinColumn()
   frontTire: FrontTire;
-  // rearTire
+
+  @OneToOne(() => RearTire, { eager: true })
+  @JoinColumn()
+  rearTire: RearTire;
 }
