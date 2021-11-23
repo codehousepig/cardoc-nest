@@ -1,14 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { FrontTireService } from '../front-tire/front-tire.service';
 import { BaseInfoService } from '../baseinfo/baseinfo.service';
+import { RearTireService } from '../rear-tire/rear-tire.service';
+import { User } from "../user/entities/user.entity";
 
 @Injectable()
 export class TemplateService {
   constructor(
     private readonly frontTireService: FrontTireService,
+    private readonly rearTireService: RearTireService,
     private readonly baseInfoService: BaseInfoService,
   ) {}
 
+  async myTire(user: User) {
+    const mytire = {
+      frontTire: await this.frontTireToTrim(user.trimId),
+      rearTire: await this.rearTireToTrim(user.trimId)
+    };
+    return mytire;
+  }
+
+  // driving -> (3/11) frontTire
   async frontTireToTrim(id: number) {
     const rawTire = await this.frontTireService.findOne(id);
     const resultTire = {
@@ -20,6 +32,19 @@ export class TemplateService {
     return resultTire;
   }
 
+  // driving -> (9/11) rearTire
+  async rearTireToTrim(id: number) {
+    const rawTire = await this.rearTireService.findOne(id);
+    const resultTire = {
+      name: rawTire.name,
+      value: `${rawTire.width}/${rawTire.ratio}R${rawTire.wheel}`,
+      unit: rawTire.unit || '',
+      multiValues: rawTire.multiValues || '',
+    };
+    return resultTire;
+  }
+
+  // spec -> (5/5) driving
   async drivingToTrim(id: number) {
     const resultDriving = {
       name: '',
@@ -30,13 +55,14 @@ export class TemplateService {
       rearBreak: '',
       frontSuspension: '',
       rearSuspension: '',
-      rearTire: '',
+      rearTire: await this.rearTireToTrim(id),
       gearRatio: '',
       powerSteering: '',
     };
     return resultDriving;
   }
 
+  // trim(baseinfo) -> (36/36) spec
   async specToTrim(id: number) {
     const resultSpec = {
       imageUrl: '',
@@ -83,6 +109,8 @@ export class TemplateService {
       price: '',
       priceUnit: '',
       isRecommended: '',
+      releaseDate: '',
+      discontinuedDate: '',
       carTypeCode: '',
       spec: await this.specToTrim(id),
     };

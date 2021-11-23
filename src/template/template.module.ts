@@ -7,11 +7,18 @@ import { Driving } from '../driving/entities/driving.entity';
 import { FrontTire } from '../front-tire/entities/front-tire.entity';
 import { BaseInfo } from '../baseinfo/entities/baseinfo.entity';
 import { BaseInfoService } from '../baseinfo/baseinfo.service';
+import { RearTire } from '../rear-tire/entities/rear-tire.entity';
+import { RearTireService } from '../rear-tire/rear-tire.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([FrontTire, Driving, BaseInfo])],
+  imports: [TypeOrmModule.forFeature([FrontTire, RearTire, Driving, BaseInfo])],
   exports: [TemplateService],
   controllers: [TemplateController],
-  providers: [TemplateService, FrontTireService, BaseInfoService],
+  providers: [
+    TemplateService,
+    FrontTireService,
+    RearTireService,
+    BaseInfoService,
+  ],
 })
 export class TemplateModule {}

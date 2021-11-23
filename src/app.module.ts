@@ -11,6 +11,7 @@ import { SpecModule } from './spec/spec.module';
 import { DrivingModule } from './driving/driving.module';
 import { FrontTireModule } from './front-tire/front-tire.module';
 import { TemplateModule } from './template/template.module';
+import { RearTireModule } from './rear-tire/rear-tire.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TemplateModule } from './template/template.module';
     DrivingModule,
     FrontTireModule,
     TemplateModule,
+    RearTireModule,
   ],
   controllers: [AppController],
   providers: [AppService],

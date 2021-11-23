@@ -4,7 +4,6 @@ import { UserService } from '../user/user.service';
 import { User } from '../user/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 
-
 @Injectable()
 export class AuthService {
   constructor(
@@ -23,7 +22,12 @@ export class AuthService {
   }
 
   async login(user: User) {
-    const payload = { username: user.id, sub: user.userId, role: user.role };
+    const payload = {
+      id: user.id,
+      sub: user.userId,
+      role: user.role,
+      trimId: user.trimId,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };

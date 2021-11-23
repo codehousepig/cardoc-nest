@@ -1,4 +1,8 @@
-import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateFrontTireDto } from './dto/create-front-tire.dto';
 import { UpdateFrontTireDto } from './dto/update-front-tire.dto';
 import { InjectRepository } from '@nestjs/typeorm';
