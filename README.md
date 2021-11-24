@@ -224,11 +224,11 @@ export class AppService implements OnApplicationBootstrap {
 
 ## 📖 API Document
 
-[🔗 Swagger UI]( )
+[🔗 Swagger UI](http://13.125.0.161:3017/api/)
 
 ### API Test 방법 <br>
 
-1. 다음 링크로 이동합니다. [Swagger 링크]() <br>
+1. 다음 링크로 이동합니다. [Swagger 링크](http://13.125.0.161:3017/api/) <br>
 2. POST '/user 회원가입: 사용자 생성' 요청을 통해 회원 정보를 추가합니다. <br>
 3. POST '/auth/login 로그인' 요청을 통해 '인증 토큰'을 받습니다. <br>
 4. '인증 토큰'을 상단의 Authorize 에 넣습니다. <br>
@@ -241,7 +241,7 @@ export class AppService implements OnApplicationBootstrap {
 <br>
 <br>
 
-## 🛠 설치 및 실행 방법
+## 🛠 설치 및 실행 방법(Local)
 
 ### 설치
 
@@ -261,6 +261,8 @@ $ npm install
 3. Docker Desktop 을 실행합니다.
 
 - Docker가 설치되어 있지 않다면 [여기](https://www.docker.com/get-started)에서 설치해 주세요.
+(Windows 또는 Mac용 Docker Desktop을 설치한 경우 Docker Compose가 이미 있습니다.)
+(그 외의 환경에서는 Docker-Compose 를 따로 설치해주어야 합니다.)
 ```
 $ docker-compose up
 ```
