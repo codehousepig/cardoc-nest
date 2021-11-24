@@ -1,7 +1,9 @@
-import { IsString } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateUserDto } from './create-user.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
-export class CreateUserDto {
+export class LoginUserDto extends PartialType(CreateUserDto) {
   @ApiProperty({
     description: '회원가입 ID',
     default: 'candycandy',

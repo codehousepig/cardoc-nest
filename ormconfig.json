@@ -1,0 +1,10 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 4000,
+  "username": "root",
+  "password": "rooter",
+  "database": "cardoc",
+  "entities": ["dist/**/*.entity{.ts,.js}"],
+  "synchronize": true
+}
