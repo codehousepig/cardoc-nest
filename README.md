@@ -162,7 +162,7 @@
 ## DB Schema
 
 <br>
-비슷한 정보들도 많아 보여 PK만 정하면 잘 풀릴 것 같아 가이드에 있는 API 사용 예제를 이용하여 직접 조회해 봄. <br>
+비슷한 정보들이 많아 보여 가이드에 있는 API 사용 예제를 이용하여 직접 조회하면 설계를 생각해 봄. <br>
 예제에서 조회가 가능한 최대 trimId는 29090(branID: 35) <br>
 계속 조회해 보았는데 29073(1개, branID: 5) / 29074(1개, branID: 10) / 29075 ~ 29078(4개, branID: 38) / 29079 ~ 29084(6개, branID: 21) / 29085 ~ 29089(5개, branID: 44)으로 규칙성을 찾지 못함. <br>
 <br>
@@ -171,13 +171,10 @@
 
 <br>
 가이드에 나온 번호를 기준으로 나온 번호의 위아래 번호를 조회해 보면 비교해 봄. <br>
-정리하여 보니 자동차의 옵션별로 저장되어 있다. 자세히 보면 타이어의 앞뒤도 다름. <br>
+정리하여 보니 자동차의 옵션별로 저장되어 있었고, 자세히 보면 타이어의 앞뒤도 다름. <br>
 그리하여 PK는 자동차 차종 ID (trimId)로 하고 각 테이블별로 1:1로 연관관계로 진행함. <br>
 
 <img src="https://user-images.githubusercontent.com/61304585/143219637-fa35c600-8b5e-494c-be95-7ee1b957a56d.png" width=700> <br>
-
-
-
 
 </br>
 </br>
@@ -245,31 +242,31 @@ export class AppService implements OnApplicationBootstrap {
 
 ### 설치
 
-1. 레포지토리를 clone 받습니다
-(DB 설정에 관한 ormconfig.json 와 docker-compose.yml 을 첨부하였으니 다운로드해 그대로 따라 하시면 됩니다.)
+1. 레포지토리를 clone 받습니다 <br>
+(DB 설정에 관한 ormconfig.json 와 docker-compose.yml 을 첨부하였으니 다운로드해 그대로 따라 하시면 됩니다.) <br>
 
 ```
 $ git clone https://github.com/codehousepig/cardoc-nest.git
 ```
 
-2. clone한 경로에 들어간 후 의존성을 설치하고 환경 셋팅을 진행합니다.
+2. clone한 경로에 들어간 후 의존성을 설치하고 환경 셋팅을 진행합니다. <br>
 
 ```
 $ cd cardoc-nest
 $ npm install
 ```
 
-3. Docker Desktop 을 실행합니다.
+3. Docker Desktop 을 실행합니다. <br>
 
-- Docker가 설치되어 있지 않다면 [여기](https://www.docker.com/get-started)에서 설치해 주세요.
-(Windows 또는 Mac용 Docker Desktop을 설치한 경우 Docker Compose가 이미 있습니다.)
-(그 외의 환경에서는 Docker-Compose 를 따로 설치해주어야 합니다.)
+- Docker가 설치되어 있지 않다면 [여기](https://www.docker.com/get-started)에서 설치해 주세요. <br>
+(Windows 또는 Mac용 Docker Desktop을 설치한 경우 Docker Compose가 이미 있습니다.) <br>
+(그 외의 환경에서는 Docker-Compose 를 따로 설치해주어야 합니다.) <br>
 ```
 $ docker-compose up
 ```
 
-4.서버를 구동합니다.
-
+4.서버를 구동합니다. <br>
+ 
 ```
 $ npm start
 ```
@@ -362,4 +359,4 @@ $ npm start
 
 ## Reference
 
-이 프로젝트는 [원티드x위코드 프리온보딩 백엔드 코스](https://www.wanted.co.kr/events/pre_onboarding_course_4) 7차 과제 일환으로 코닥(cardoc)에서 출제한 과제를 기반으로 만들었습니다.
+이 프로젝트는 [원티드x위코드 프리온보딩 백엔드 코스](https://www.wanted.co.kr/events/pre_onboarding_course_4) 7차 과제 일환으로 카닥(cardoc)에서 출제한 과제를 기반으로 만들었습니다.
