@@ -248,7 +248,7 @@ export class AppService implements OnApplicationBootstrap {
 1. 레포지토리를 clone 받습니다
 
 ```
-$ git clone
+$ git clone https://github.com/codehousepig/cardoc-nest.git
 ```
 
 2. clone한 경로에 들어간 후 의존성을 설치하고 환경 셋팅을 진행합니다.
