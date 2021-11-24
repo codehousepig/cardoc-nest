@@ -7,6 +7,7 @@ import { Spec } from './spec/entities/spec.entity';
 import { Driving } from './driving/entities/driving.entity';
 import { FrontTire } from './front-tire/entities/front-tire.entity';
 import { RearTire } from './rear-tire/entities/rear-tire.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AppService implements OnApplicationBootstrap {
@@ -29,11 +30,18 @@ export class AppService implements OnApplicationBootstrap {
   async onApplicationBootstrap(): Promise<any> {
     // Swagger default 값 제외하고 저장: USER
     const users = {
-      user1: { id: 'mylovewolkswagen', password: '$2b$10$DODkPKtnC8dR4hBRSdUQA.x0oyLo.kNB0aKVKQAbJlsLwEVZSGZj6' },
-      user2: { id: 'bmwwow', password: '$2b$10$DODkPKtnC8dR4hBRSdUQA.x0oyLo.kNB0aKVKQAbJlsLwEVZSGZj6' },
-      user3: { id: 'dreamcar', password: '$2b$10$DODkPKtnC8dR4hBRSdUQA.x0oyLo.kNB0aKVKQAbJlsLwEVZSGZj6' },
+      user1: { userId: 2, id: 'mylovewolkswagen', password: 'ASdfdsf3232@' },
+      user2: { userId: 3 ,id: 'bmwwow', password: 'A1a1B2b2C3c3D4d4' },
+      user3: { userId: 4 ,id: 'dreamcar', password: '123456789' },
     };
-    for (const index in users) await this.userRepository.save(users[index]);
+    for (const index in users) {
+      const hash = await bcrypt.hash(users[index].password, 10);
+      const user = this.userRepository.create({
+        ...users[index],
+        password: hash,
+      });
+      await this.userRepository.save(user);
+    }
 
     // Swagger default 값 제외하고 저장: rearTIRE
     const rearTires = {

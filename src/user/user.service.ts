@@ -54,28 +54,35 @@ export class UserService {
       throw new BadRequestException(
         `Parameter가 잘못되었습니다: 5명 이하만 가능합니다..`,
       );
-    const queryRunner = this.connection.createQueryRunner();
 
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-    try {
-      for (let i = 0; i < updateUserDTOs.length; i++) {
-        const user = await this.findByName(updateUserDTOs[i].id);
+    let fail = 0;
+    for (let i = 0; i < updateUserDTOs.length; i++) {
+      const queryRunner = this.connection.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      try {
+        const user = await this.userRepository.findOne({
+          id: updateUserDTOs[i].id,
+        });
+        if (user == undefined) {
+          fail++;
+          continue;
+        }
         if (updateUserDTOs[i].password) {
           const hash = await bcrypt.hash(updateUserDTOs[i].password, 10);
           user.password = hash;
         }
         if (updateUserDTOs[i].trimId) user.trimId = updateUserDTOs[i].trimId;
         await this.userRepository.save(user);
+        await queryRunner.commitTransaction();
+      } catch (err) {
+        await queryRunner.rollbackTransaction();
+        // throw err; 에러를 던지면 다른 사용자의 정보를 저장 못함.
+      } finally {
+        await queryRunner.release();
       }
-      await queryRunner.commitTransaction();
-    } catch (err) {
-      await queryRunner.rollbackTransaction();
-      throw err;
-    } finally {
-      await queryRunner.release();
     }
-    return `Updates a success ${updateUserDTOs.length}s ID`;
+    return `Updates a success ${updateUserDTOs.length - fail} USER. And ${fail} user not exist.`;
   }
 
   async remove(id: number) {
