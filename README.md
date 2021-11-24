@@ -160,7 +160,24 @@
 <br>
 
 ## DB Schema
-<img src="https://user-images.githubusercontent.com/61304585/143197784-5736f3e1-a50c-456d-afb4-8455cc7bc8a5.png" width=700>
+
+<br>
+비슷한 정보들도 많아 보여 PK만 정하면 잘 풀릴 것 같아 가이드에 있는 API 사용 예제를 이용하여 직접 조회해 봄. <br>
+예제에서 조회가 가능한 최대 trimId는 29090(branID: 35) <br>
+계속 조회해 보았는데 29073(1개, branID: 5) / 29074(1개, branID: 10) / 29075 ~ 29078(4개, branID: 38) / 29079 ~ 29084(6개, branID: 21) / 29085 ~ 29089(5개, branID: 44)으로 규칙성을 찾지 못함. <br>
+<br>
+
+<img src="https://user-images.githubusercontent.com/61304585/143197784-5736f3e1-a50c-456d-afb4-8455cc7bc8a5.png" width=700> <br>
+
+<br>
+가이드에 나온 번호를 기준으로 나온 번호의 위아래 번호를 조회해 보면 비교해 봄. <br>
+정리하여 보니 자동차의 옵션별로 저장되어 있다. 자세히 보면 타이어의 앞뒤도 다름. <br>
+그리하여 PK는 자동차 차종 ID (trimId)로 하고 각 테이블별로 1:1로 연관관계로 진행함. <br>
+
+<img src="https://user-images.githubusercontent.com/61304585/143219637-fa35c600-8b5e-494c-be95-7ee1b957a56d.png" width=700> <br>
+
+
+
 
 </br>
 </br>
@@ -268,12 +285,73 @@ $ npm start
  ┃ ┣ 📜auth.module.ts
  ┃ ┣ 📜auth.service.ts
  ┃ ┗ 📜constant.ts
+ ┃ 📂base
+ ┃ ┗ 📜base.entity.ts
+ ┣ 📂baseinfo (trim)
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜create-baseinfo.dto.ts
+ ┃ ┣ 📂entities
+ ┃ ┃ ┗ 📜baseinfo.entity.ts
+ ┃ ┣ 📜baseinfo.controller.ts
+ ┃ ┣ 📜baseinfo.module.ts
+ ┃ ┗ 📜baseinfo.service.ts
+ ┣ 📂driving
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜create-driving.dto.ts
+ ┃ ┣ 📂entities
+ ┃ ┃ ┗ 📜driving.entity.ts
+ ┃ ┣ 📜driving.controller.ts
+ ┃ ┣ 📜driving.module.ts
+ ┃ ┗ 📜driving.service.ts
+ ┃ 📂enums
+ ┃ ┗ 📜user.role.enum.ts
+ ┣ 📂front-tire
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜create-front-tire.dto.ts
+ ┃ ┣ 📂entities
+ ┃ ┃ ┗ 📜front-tire.entity.ts
+ ┃ ┣ 📜front-tire.controller.ts
+ ┃ ┣ 📜front-tire.module.ts
+ ┃ ┗ 📜front-tire.service.ts
+ ┣ 📂rear-tire
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜create-rear-tire.dto.ts
+ ┃ ┣ 📂entities
+ ┃ ┃ ┗ 📜rear-tire.entity.ts
+ ┃ ┣ 📜rear-tire.controller.ts
+ ┃ ┣ 📜rear-tire.module.ts
+ ┃ ┗ 📜rear-tire.service.ts
+ ┣ 📂spec
+ ┃ ┣ 📂dto
+ ┃ ┃ ┗ 📜create-spec.dto.ts
+ ┃ ┣ 📂entities
+ ┃ ┃ ┗ 📜spec.entity.ts
+ ┃ ┣ 📜spec.controller.ts
+ ┃ ┣ 📜spec.module.ts
+ ┃ ┗ 📜spec.service.ts
+ ┣ 📂template
+ ┃ ┣ 📜template.controller.ts
+ ┃ ┣ 📜template.module.ts
+ ┃ ┗ 📜template.service.ts
+ ┣ 📂user
+ ┃ ┣ 📂dto
+ ┃ ┃ ┣ 📜create-user.dto.ts
+ ┃ ┃ ┣ 📜login-user.dto.ts
+ ┃ ┃ ┗ 📜update-user.dto.ts
+ ┃ ┣ 📂entities
+ ┃ ┃ ┗ 📜user.entity.ts
+ ┃ ┣ 📜user.controller.ts
+ ┃ ┣ 📜user.module.ts
+ ┃ ┗ 📜user.service.ts
+ ┣ 📜app.controller.ts
+ ┣ 📜app.module.ts
+ ┣ 📜app.service.ts
+ ┗ 📜main.ts
 ```
 
 ## 🛠 Dependencies
-
 <div align=center>
-
+  <img src="https://user-images.githubusercontent.com/61304585/143218909-98262fc8-73f7-4743-b86d-0e56f8ab8032.png" width=600>
 </div>
 
 </br>
