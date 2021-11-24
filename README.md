@@ -246,6 +246,7 @@ export class AppService implements OnApplicationBootstrap {
 ### 설치
 
 1. 레포지토리를 clone 받습니다
+(DB 설정에 관한 ormconfig.json 와 docker-compose.yml 을 첨부하였으니 다운로드해 그대로 따라 하시면 됩니다.)
 
 ```
 $ git clone https://github.com/codehousepig/cardoc-nest.git
