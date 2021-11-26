@@ -15,7 +15,7 @@
 
 | 이름   | github                                          | blog                                             | 프로젝트 회고 |
 | ------ | ----------------------------------------------- | ------------------------------------------------ | ------------ |
-| 정천우 | [codehousepig](https://github.com/codehousepig) | [codehousepig](https://blog.naver.com/codehouse9) | [개인과제]() |      |
+| 정천우 | [codehousepig](https://github.com/codehousepig) | [codehousepig](https://blog.naver.com/codehouse9) | [개인과제](https://blog.naver.com/codehouse9/222579296850) |
 
 </div>
 
